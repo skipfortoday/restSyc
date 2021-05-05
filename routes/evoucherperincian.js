@@ -10,7 +10,12 @@ router.get("/", async function (req, res, next) {
       TIME_FORMAT(TerakhirUpdate, "%T") as time from log_evoucherperincian
       ORDER BY id DESC Limit 1`,
       (err, results) => {
-        if (err) console.log(err);
+        if (err)  res.json({
+          success: false,
+          message: err.sqlMessage,
+          data: results[0],
+        })
+        console.log(err);
         res.json({
           success: true,
           message: "Berhasil Mengambil Jam Terakhir Sinkron",
@@ -18,11 +23,12 @@ router.get("/", async function (req, res, next) {
         });
       }
     );
+    
   } catch (error) {
     console.error(error);
     res.json({
       success: false,
-      message: "Error SQL",
+      message: "Error Mengambil Jam Terakhir Sinkron",
       data: false,
     });
   }
@@ -32,8 +38,6 @@ router.post("/", async function (req, res, next) {
   console.log(req.body);
   try {
     await
-
-
     res.json({
       success: true,
       message: "Berhasil Ambil Data",
