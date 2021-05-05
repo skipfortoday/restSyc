@@ -1,4 +1,5 @@
 var express = require("express");
+var bodyParser = require("body-parser");
 var router = express.Router();
 const conn = require("../app");
 
@@ -9,22 +10,42 @@ router.get("/", async function (req, res, next) {
       TIME_FORMAT(TerakhirUpdate, "%T") as time from log_evoucherperincian
       ORDER BY id DESC Limit 1`,
       (err, results) => {
-        if (err) res.send(err);
-        res.json({ error: false,
-                   data : results[0]});
+        if (err) console.log(err);
+        res.json({
+          success: true,
+          message: "Berhasil Mengambil Jam Terakhir Sinkron",
+          data: results[0],
+        });
       }
     );
   } catch (error) {
     console.error(error);
+    res.json({
+      success: false,
+      message: "Error SQL",
+      data: false,
+    });
   }
 });
 
 router.post("/", async function (req, res, next) {
+  console.log(req.body);
   try {
-        res.json({ error: false,
-                   data :true});
+    await
+
+
+    res.json({
+      success: true,
+      message: "Berhasil Ambil Data",
+      data: req.body,
+    });
   } catch (error) {
     console.error(error);
+    res.json({
+      success: false,
+      message: "Error SQL",
+      data: false,
+       });
   }
 });
 
