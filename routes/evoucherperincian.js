@@ -44,12 +44,11 @@ router.post("/", async function (req, res, next) {
         if (err) {
           res.json({
             success: false,
-            status: 409,
-            message: err.sqlMessage,
+            status: 204,
+            message: "Belum ada data untuk sinkron",
             data: false,
           });
         } else {
-          console.log(results.affectedRows)
           if (results.affectedRows > 0){
             conn.query(`INSERT INTO log_evoucherperincian (KodeCabang) VALUES ('SB2')`, (err) => {
               if (err) {
