@@ -5,10 +5,7 @@ const conn = require("../app");
 router.get("/", async function (req, res, next) {
   try {
     conn.query(
-      `SELECT DATE_FORMAT(TerakhirUpdate, "%Y-%m-%d") as date,
-      TIME_FORMAT(TerakhirUpdate, "%T") as time 
-      from log_evoucherperincian
-      ORDER BY id DESC Limit 1`,
+      `SELECT time from tevoucherperincian ORDER BY time DESC Limit 1`,
       (err, results) => {
         if (err) {
           res.json({
@@ -66,7 +63,7 @@ router.post("/", async function (req, res, next) {
             res.json({
               success: false,
               status: 409,
-              message: results,
+              message: results.data,
               data: false,
             });
           }
