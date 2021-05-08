@@ -5,7 +5,10 @@ const conn = require("../app");
 router.get("/", async function (req, res, next) {
   try {
     conn.query(
-      `SELECT time from tevoucherperincian ORDER BY time DESC Limit 1`,
+      `SELECT DATE_FORMAT(time, "%Y-%m-%d") as date,
+      TIME_FORMAT(time, "%T") as time 
+      from tevoucherperincian
+      ORDER BY time DESC Limit 1`,
       (err, results) => {
         if (err) {
           res.json({
@@ -19,7 +22,7 @@ router.get("/", async function (req, res, next) {
             success: true,
             status: 200,
             message: "Berhasil Mengambil Jam Terakhir Sinkron",
-            data: results[0],
+            data: results[0].date + " " + results[0].time,
           });
         }
       }
@@ -47,11 +50,6 @@ router.post("/", async function (req, res, next) {
           });
         } else {
           if (results.affectedRows > 0){
-            conn.query(`INSERT INTO log_evoucherperincian (KodeCabang) VALUES ('SB2')`, (err) => {
-              if (err) {
-                console.log(err);
-              }
-            });
             res.json({
               success: true,
               status: 201,
