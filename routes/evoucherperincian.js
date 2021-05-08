@@ -5,10 +5,10 @@ const conn = require("../app");
 router.get("/", async function (req, res, next) {
   try {
     conn.query(
-      `SELECT DATE_FORMAT(time, "%Y-%m-%d") as date,
-      TIME_FORMAT(time, "%T") as time 
+      `SELECT DATE_FORMAT(CreateAt, "%Y-%m-%d") as date,
+      TIME_FORMAT(CreateAt, "%T") as time 
       from tevoucherperincian
-      ORDER BY time DESC Limit 1`,
+      ORDER BY CreateAt DESC Limit 1`,
       (err, results) => {
         if (err) {
           res.json({
@@ -38,7 +38,7 @@ router.post("/", async function (req, res, next) {
       `INSERT IGNORE tevoucherperincian (
         RecordNum,Tanggal,NoBukti,Keterangan,AmountD,AmountK,
         SaldoAwal,SaldoAkhir,IndexNum,UserID,TglInput,Ubah,
-        Hapus,Pelanggan,Lokasi,Evoucher,Flag,Koreksi
+        Hapus,Pelanggan,Lokasi,Evoucher,Flag,Koreksi,CreateAt
         ) VALUES ${req.body.data};`,
       (err, results) => {
         if (err) {
