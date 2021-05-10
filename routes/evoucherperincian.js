@@ -35,11 +35,32 @@ router.get("/", async function (req, res, next) {
 router.post("/", async function (req, res, next) {
   try {
     conn.query(
-      `INSERT IGNORE tevoucherperincian (
+      `INSERT INTO tevoucherperincian (
         RecordNum,Tanggal,NoBukti,Keterangan,AmountD,AmountK,
         SaldoAwal,SaldoAkhir,IndexNum,UserID,TglInput,Ubah,
         Hapus,Pelanggan,Lokasi,Evoucher,Flag,Koreksi,CreateAt
-        ) VALUES ${req.body.data};`,
+        ) VALUES ${req.body.data} 
+        ON DUPLICATE KEY UPDATE
+        RecordNum=VALUES(RecordNum),
+        Tanggal=VALUES(Tanggal),
+        NoBukti=VALUES(NoBukti),
+        Keterangan=VALUES(Keterangan),
+        AmountD=VALUES(AmountD),
+        AmountK,
+        SaldoAwal,
+        SaldoAkhir,
+        IndexNum,
+        UserID,
+        TglInput,
+        Ubah,
+        Hapus,
+        Pelanggan,
+        Lokasi,
+        Evoucher,
+        Flag,
+        Koreksi,
+        CreateAt
+        ;`,
       (err, results) => {
         if (err) {
           res.json({
@@ -72,5 +93,36 @@ router.post("/", async function (req, res, next) {
     console.error(error);
   }
 });
+
+router.get("/data", async function (req, res, next) {
+  try {
+    conn.query(
+      `SELECT Flag,Lokasi,      
+      DATE_FORMAT(CreateAt, "%Y-%m-%d %T") as Time
+      from tevoucherperincian
+      ORDER BY CreateAt DESC`,
+      (err, results) => {
+        if (err) {
+          res.json({
+            success: false,
+            status: 409,
+            message: err.sqlMessage,
+            data: false,
+          });
+        } else {
+          res.json({
+            success: true,
+            status: 200,
+            message: "Berhasil Mendapatkan Data",
+            data: results,
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 
 module.exports = router;
