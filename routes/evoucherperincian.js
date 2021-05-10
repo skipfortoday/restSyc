@@ -33,36 +33,37 @@ router.get("/", async function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
+  console.log(req.body.data)
   try {
     conn.query(
       `INSERT INTO tevoucherperincian (
         RecordNum,Tanggal,NoBukti,Keterangan,AmountD,AmountK,
         SaldoAwal,SaldoAkhir,IndexNum,UserID,TglInput,Ubah,
         Hapus,Pelanggan,Lokasi,Evoucher,Flag,Koreksi,CreateAt
-        ) VALUES ${req.body.data} 
+        ) VALUES ${req.body.data}
         ON DUPLICATE KEY UPDATE
         RecordNum=VALUES(RecordNum),
         Tanggal=VALUES(Tanggal),
         NoBukti=VALUES(NoBukti),
         Keterangan=VALUES(Keterangan),
         AmountD=VALUES(AmountD),
-        AmountK,
-        SaldoAwal,
-        SaldoAkhir,
-        IndexNum,
-        UserID,
-        TglInput,
-        Ubah,
-        Hapus,
-        Pelanggan,
-        Lokasi,
-        Evoucher,
-        Flag,
-        Koreksi,
-        CreateAt
+        AmountK=VALUES(AmountK),
+        SaldoAwal=VALUES(SaldoAwal),
+        SaldoAkhir=VALUES(SaldoAkhir),
+        IndexNum=VALUES(IndexNum),
+        UserID=VALUES(UserID),
+        TglInput=VALUES(TglInput),
+        Ubah=VALUES(Ubah),
+        Hapus=VALUES(Hapus),
+        Pelanggan=VALUES(Pelanggan),
+        Lokasi=VALUES(Lokasi),
+        Evoucher=VALUES(Evoucher),
+        Koreksi=VALUES(Koreksi),
+        CreateAt=VALUES(CreateAt)
         ;`,
       (err, results) => {
         if (err) {
+          console.log(err)
           res.json({
             success: false,
             status: 204,
