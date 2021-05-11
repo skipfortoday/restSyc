@@ -33,7 +33,6 @@ router.get("/", async function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
-  console.log(req.body.data)
   try {
     conn.query(
       `INSERT INTO tevoucherperincian (
@@ -63,7 +62,6 @@ router.post("/", async function (req, res, next) {
         ;`,
       (err, results) => {
         if (err) {
-          console.log(err)
           res.json({
             success: false,
             status: 204,
@@ -98,7 +96,7 @@ router.post("/", async function (req, res, next) {
 router.get("/data", async function (req, res, next) {
   try {
     conn.query(
-      `SELECT Flag,Lokasi,      
+      `SELECT RecordNUm,Flag,Lokasi,      
       DATE_FORMAT(CreateAt, "%Y-%m-%d %T") as Time
       from tevoucherperincian
       ORDER BY CreateAt DESC`,
