@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const conn = require("../app");
+const firebase = require("../firebase");
+const moment = require("moment")
 
 router.get("/", async function (req, res, next) {
   try {
@@ -69,15 +71,15 @@ router.post("/", async function (req, res, next) {
             data: false,
           });
         } else {
-          if (results.affectedRows > 0){
+          if (results.affectedRows > 0) {
+            firebase.database().ref(`/evoperincian`).update({ sb2: moment.parseZone(moment()).format('YYYY-MM-DD HH:mm:ss')})
             res.json({
               success: true,
               status: 201,
               message: results,
               data: false,
             });
-          }
-          else {
+          } else {
             res.json({
               success: false,
               status: 409,
@@ -96,7 +98,7 @@ router.post("/", async function (req, res, next) {
 router.get("/data", async function (req, res, next) {
   try {
     conn.query(
-      `SELECT RecordNUm,Flag,Lokasi,      
+      `SELECT RecordNum,Flag,Lokasi,      
       DATE_FORMAT(CreateAt, "%Y-%m-%d %T") as Time
       from tevoucherperincian
       ORDER BY CreateAt DESC`,
@@ -122,6 +124,5 @@ router.get("/data", async function (req, res, next) {
     console.error(error);
   }
 });
-
 
 module.exports = router;
