@@ -67,12 +67,13 @@ router.post("/", async function (req, res, next) {
           res.json({
             success: false,
             status: 204,
-            message: "Belum ada data untuk sinkron",
+            message: sqlMessage,
             data: false,
           });
         } else {
           if (results.affectedRows > 0) {
-            firebase.database().ref(`/evoperincian`).update({ sb2: moment.parseZone(moment()).format('YYYY-MM-DD HH:mm:ss')})
+            firebase.database().ref(`/evoperincian`)
+            .update({ sb2: moment.parseZone(moment()).format('YYYY-MM-DD HH:mm:ss')})
             res.json({
               success: true,
               status: 201,
